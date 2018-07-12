@@ -6,8 +6,16 @@ pageEncoding="ISO-8859-1"%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
 </head>
+
 <body>
-<p>Hello, <%=session.getAttribute("name")%></p>
+<% 
+
+if (session == null ) {
+	response.sendRedirect("home.jsp");
+}
+
+%>
+<p>Hello, <%=session.getAttribute("name") %><%	session.invalidate();  %></p>
 <p><a href="logout.jsp">Logout</a>
 </body>
 </html>

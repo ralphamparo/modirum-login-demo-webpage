@@ -1,5 +1,6 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-pageEncoding="ISO-8859-1"%>
+pageEncoding="ISO-8859-1"%>s
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,23 +10,56 @@ pageEncoding="ISO-8859-1"%>
 <body>
 
 <%
+if (session == null ) {
+	response.sendRedirect("home.jsp");
+}
+%>
+
+<%
+	ArrayList<String> usernames=new ArrayList<String>();  
+	ArrayList<String> passwords=new ArrayList<String>();
+	
+	String filePath = new java.io.File("credentials.txt").getAbsolutePath();
+			
+	java.io.File file = new java.io.File(filePath);
+	java.io.FileReader fileReader = new java.io.FileReader(file);
+	java.io.BufferedReader bufferedReader = new java.io.BufferedReader(fileReader);
+	String line;
+	while ((line = bufferedReader.readLine()) != null) {
+		String credential[]= line.split("=");
+		usernames.add(credential[0]);
+		passwords.add(credential[1]);
+	}
+	fileReader.close();
+
+
 //create String Arrays for DB users and passwords
-String[] usernames = { "raprap", "rosamair" , "rosesophia"};   
-String[] passwords = { "amparo", "chua" , "loren"};
+//String[] usernames = { "raprap", "rosamair" , "rosesophia"};   
+//String[] passwords = { "amparo", "chua" , "loren"};
 
 //retrieve parameters from the HTTP login request
-String name = request.getParameter("name");
-String password = request.getParameter("password");
+
+boolean nullSession=false;
+
+String name = String.valueOf(request.getParameter("name"));
+String password = String.valueOf(request.getParameter("password"));
+
+if(name.equals("null") && password.equals("null"))
+{
+	nullSession=true;
+}
 
 if((!(name.equals(null) || name.equals("")) && !(password.equals(null) || password.equals(""))))
 {
-try{
+try
+{
 
 boolean userLoggedIn=false;
 
-for (int index=0; index < usernames.length; index++) {
+for (int index=0; index < usernames.size(); index++) 
+{
 	
-	if(name.equals(usernames[index].toString()) && password.equals(passwords[index].toString()))
+	if(name.equals(usernames.get(index).toString()) && password.equals(passwords.get(index).toString()))
 	{
 	session.setAttribute("name",name);
 	session.setAttribute("password",password);
@@ -37,19 +71,24 @@ for (int index=0; index < usernames.length; index++) {
 	} 
 }
 
-if(!userLoggedIn)
+if(!userLoggedIn && !nullSession)
 {      
   response.sendRedirect("error.jsp");
-}else{}
+}
+else if(!userLoggedIn && nullSession)
+{
+	response.sendRedirect("welcome.jsp");
+}
+else{
+	
+}
 }
 catch(Exception e)
 {
 //out.println(e);
-} 
-}
-else
+} finally{}
+}else
 {
-	//getServletContext().getRequestDispatcher("home.jsp").include(request, response);
 	response.sendRedirect("error.jsp");
 }
 %>
