@@ -12,7 +12,7 @@ pageEncoding="ISO-8859-1"%>
 <% 
 
 String username=(String)session.getAttribute("name");
-
+//if user is not logged in, redirect to home.jsp
 if (session == null || username == null ) {
 	response.sendRedirect("home.jsp");
 }

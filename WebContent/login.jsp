@@ -10,12 +10,14 @@ pageEncoding="ISO-8859-1"%>s
 <body>
 
 <%
+// redirect to home page if user is not logged
 if (session == null ) {
 	response.sendRedirect("home.jsp");
 }
 %>
 
 <%
+	//retrieve users from credentials.txt file
 	ArrayList<String> usernames=new ArrayList<String>();  
 	ArrayList<String> passwords=new ArrayList<String>();
 	
@@ -31,11 +33,6 @@ if (session == null ) {
 		passwords.add(credential[1]);
 	}
 	fileReader.close();
-
-
-//create String Arrays for DB users and passwords
-//String[] usernames = { "raprap", "rosamair" , "rosesophia"};   
-//String[] passwords = { "amparo", "chua" , "loren"};
 
 //retrieve parameters from the HTTP login request
 
@@ -62,9 +59,7 @@ for (int index=0; index < usernames.size(); index++)
 	if(name.equals(usernames.get(index).toString()) && password.equals(passwords.get(index).toString()))
 	{
 	session.setAttribute("name",name);
-	session.setAttribute("password",password);
-	session.setAttribute("loggedIn","true");
-	
+	session.setAttribute("password",password);	
 	response.sendRedirect("welcome.jsp");
 	userLoggedIn=true;
 	break;
