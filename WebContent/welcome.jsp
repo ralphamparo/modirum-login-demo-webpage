@@ -8,14 +8,17 @@ pageEncoding="ISO-8859-1"%>
 </head>
 
 <body>
+
 <% 
 
-if (session == null ) {
+String username=(String)session.getAttribute("name");
+
+if (session == null || username == null ) {
 	response.sendRedirect("home.jsp");
 }
 
 %>
-<p>Hello, <%=session.getAttribute("name") %><%	session.invalidate();  %></p>
+<p>Hello, <%=session.getAttribute("name") %></p>
 <p><a href="logout.jsp">Logout</a>
 </body>
 </html>
