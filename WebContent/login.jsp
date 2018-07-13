@@ -21,7 +21,7 @@ if (session == null ) {
 	ArrayList<String> usernames=new ArrayList<String>();  
 	ArrayList<String> passwords=new ArrayList<String>();
 	
-	String filePath = new java.io.File("credentials.txt").getAbsolutePath();
+	String filePath = new java.io.File("Tomcat/webapps/examples/jsp/loginlogout/credentials.txt").getCanonicalPath();
 			
 	java.io.File file = new java.io.File(filePath);
 	java.io.FileReader fileReader = new java.io.FileReader(file);
